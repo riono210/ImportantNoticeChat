@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class TestButton : MonoBehaviour
 {
     public GameObject myMessage;
@@ -22,15 +22,29 @@ public class TestButton : MonoBehaviour
     }
 
     public void OnClick(){
-        var message = new Dictionary<string, string>(){
-            {"content", "Hello !"},
-            {"name", "Aさん"}
-        };
-        this.appendMessage(message);
+       this.appendMyMessage("testUser", "Hello");
+       this.appendOthersMessage("testOthersUser", "World!");
     }
 
-    void appendMessage(Dictionary<string, string> message){	
-        GameObject mes = Instantiate(myMessage);
-        mes.transform.parent = messages.transform;
+    void appendMyMessage(string userName, string message){
+        GameObject newMessage = Instantiate(this.myMessage);
+        newMessage.transform.SetParent(this.messages.transform);
+
+        Text messageTextNode = newMessage.transform.Find("Message").gameObject.GetComponent<Text>();
+        messageTextNode.text = message;
+
+        Text userNameNode = newMessage.transform.Find("User/Name").gameObject.GetComponent<Text>();
+        userNameNode.text = userName;
+    }
+
+    void appendOthersMessage(string userName, string message){
+        GameObject newMessage = Instantiate(this.othersMessage);
+        newMessage.transform.SetParent(this.messages.transform);
+
+        Text messageTextNode = newMessage.transform.Find("Message").gameObject.GetComponent<Text>();
+        messageTextNode.text = message;
+
+        Text userNameNode = newMessage.transform.Find("User/Name").gameObject.GetComponent<Text>();
+        userNameNode.text = userName;
     }
 }
