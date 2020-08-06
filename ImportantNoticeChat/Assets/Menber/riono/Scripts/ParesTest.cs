@@ -9,17 +9,17 @@ public class ParesTest : MonoBehaviour {
 
     // Start is called before the first frame updat
     void Start () {
-        StartCoroutine (call.GetText ());
+        //StartCoroutine (call.GetText ());
     }
 
     void Update () {
-        if (once) {
-            if (call.postresult != "") {
-                once = false;
+        // if (once) {
+        //     if (call.postresult != "") {
+        //         once = false;
 
-                JsonParser.ConvertFromJson (call.postresult);
-            }
-        }
+        //         JsonParser.ConvertFromJson (call.postresult);
+        //     }
+        // }
     }
 
 }
