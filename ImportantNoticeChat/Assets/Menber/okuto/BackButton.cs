@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
-public class UserPanel : MonoBehaviour
+public class BackButton : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -18,6 +17,7 @@ public class UserPanel : MonoBehaviour
     }
 
     public void OnClick(){
-        SceneManager.LoadScene("ChatScene");
+        SceneManager.LoadScene("SelectScene");
     }
 }
+
