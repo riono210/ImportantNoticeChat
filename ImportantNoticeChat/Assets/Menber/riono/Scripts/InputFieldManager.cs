@@ -13,6 +13,9 @@ public class InputFieldManager : MonoBehaviour {
     private Vector3 defaultFooterPos; // footerの初期位置
     private Vector3 defalutBodyPos; // bodyの初期位置
 
+    string inputText; // 入力されたテキスト
+    bool isCancel;
+
     // Start is called before the first frame update
     void Start () {
         inputField = this.transform.GetChild (0).GetComponent<InputField> ();
@@ -23,7 +26,6 @@ public class InputFieldManager : MonoBehaviour {
         } else {
             Debug.LogError ("Bodyがアタッチされていません");
         }
-
         InitInputField ();
     }
 
@@ -34,20 +36,49 @@ public class InputFieldManager : MonoBehaviour {
     // フィールドの初期化
     private void InitInputField () {
         inputField.text = "";
+        inputText = "";
+        ResetKeybord ();
+    }
+
+    // キーボードによって上にずれたUIの位置を戻す
+    public void ResetKeybord () {
         isOnceInput = true;
         footerPanelRect.localPosition = defaultFooterPos;
         bodyPanelRect.localPosition = defalutBodyPos;
-        //inputField.ActivateInputField ();
+        isCancel = false;
     }
 
     // 入力完了
     public void FinishEditText () {
-        // 一旦終了した後に再入力パターンがあるのでそれを対応する
+        Debug.Log ("りざると:" + inputText);
+#if UNITY_EDITOR_OSX
+        // エディタでは入力キャンセルは処理しない
+        //InitInputField ();
+        //ResetKeybord ();
+        Debug.Log ("mac");
 
-        string inputText = inputField.text;
-        Debug.Log ("inputtext:" + inputText);
+#elif UNITY_IOS
+        if (inputField.touchScreenKeyboard.status == TouchScreenKeyboard.Status.Done) {
+            // 入力完了時
+            // 送信のための準備
 
-        InitInputField ();
+            // フィールドの初期化
+            InitInputField ();
+            Debug.Log ("Done");
+        } else if (inputField.touchScreenKeyboard.status == TouchScreenKeyboard.Status.Canceled ||
+            inputField.touchScreenKeyboard.status == TouchScreenKeyboard.Status.LostFocus) {
+            // 入力キャンセル時もしくは、
+            inputField.text = inputText;
+            // キーボードだけ戻す
+            ResetKeybord ();
+            Debug.Log ("Canseled");
+
+        } else { // 他の部分をタップした場合
+            inputField.text = inputText;
+            ResetKeybord ();
+            Debug.Log ("Canseled");
+        }
+#endif
     }
 
     // 入力開始時
@@ -56,6 +87,23 @@ public class InputFieldManager : MonoBehaviour {
             isOnceInput = false;
             footerPanelRect.localPosition += new Vector3 (0, 940f, 0);
             bodyPanelRect.localPosition += new Vector3 (0, 940f, 0);
+        }
+    }
+
+    // テキストの内容が変更された時に呼ばれる
+    public void ChangeTextField () {
+        Debug.Log ("呼び出しフィールド: " + inputField.text);
+        
+        if (inputField.touchScreenKeyboard.status == TouchScreenKeyboard.Status.Canceled) {
+            isCancel =true;
+            // Debug.Log ("フィールド: " + inputField.text + " テキスト: " + inputText);
+            // if (inputField.text != "") {
+            //     inputText = inputField.text;
+            //     Debug.Log ("cancel inputText: " + inputText);
+            // }
+        } else if (inputField.isFocused && !isCancel){ // 他のところをタップした時
+            inputText = inputField.text;
+            Debug.Log ("isFocuse inputText: " + inputText);
         }
     }
 }
