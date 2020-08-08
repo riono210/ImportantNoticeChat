@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InputFieldManager : MonoBehaviour {
@@ -14,7 +15,11 @@ public class InputFieldManager : MonoBehaviour {
     private Vector3 defalutBodyPos; // bodyの初期位置
 
     string inputText; // 入力されたテキスト
+    int priority; // メッセージの重要度
     bool isCancel;
+
+    private MassageClass massage; // メッセージの格納クラス
+    [SerializeField] private GameObject toriggerParent; // priority設定の親objを取得
 
     // Start is called before the first frame update
     void Start () {
@@ -30,7 +35,13 @@ public class InputFieldManager : MonoBehaviour {
     }
 
     void Update () {
+#if UNITY_IOS && !UNITY_EDITOR_OSX
         StartInputText ();
+
+        if (inputField.touchScreenKeyboard == null && !isOnceInput) { // キーボードが消えたとき
+            ResetKeybord ();
+        }
+#endif
     }
 
     // フィールドの初期化
@@ -38,6 +49,9 @@ public class InputFieldManager : MonoBehaviour {
         inputField.text = "";
         inputText = "";
         ResetKeybord ();
+        priority = 1;
+        massage = new MassageClass ();
+        toriggerParent.SetActive (false); // priorityのトグルを消す
     }
 
     // キーボードによって上にずれたUIの位置を戻す
@@ -53,11 +67,10 @@ public class InputFieldManager : MonoBehaviour {
         Debug.Log ("りざると:" + inputText);
 #if UNITY_EDITOR_OSX
         // エディタでは入力キャンセルは処理しない
-        //InitInputField ();
+        InitInputField ();
         //ResetKeybord ();
-        Debug.Log ("mac");
 
-#elif UNITY_IOS
+#elif UNITY_IOS && !UNITY_EDITOR_OSX
         if (inputField.touchScreenKeyboard.status == TouchScreenKeyboard.Status.Done) {
             // 入力完了時
             // 送信のための準備
@@ -72,11 +85,6 @@ public class InputFieldManager : MonoBehaviour {
             // キーボードだけ戻す
             ResetKeybord ();
             Debug.Log ("Canseled");
-
-        } else { // 他の部分をタップした場合
-            inputField.text = inputText;
-            ResetKeybord ();
-            Debug.Log ("Canseled");
         }
 #endif
     }
@@ -87,23 +95,53 @@ public class InputFieldManager : MonoBehaviour {
             isOnceInput = false;
             footerPanelRect.localPosition += new Vector3 (0, 940f, 0);
             bodyPanelRect.localPosition += new Vector3 (0, 940f, 0);
+            toriggerParent.SetActive (true); // priorityのトグルを出す
         }
     }
 
     // テキストの内容が変更された時に呼ばれる
     public void ChangeTextField () {
         Debug.Log ("呼び出しフィールド: " + inputField.text);
-        
+        if (inputField.text == "") { // 空白は無視
+            return;
+        }
+
+#if UNITY_EDITOR_OSX
+        inputText = inputField.text;
+
+#elif UNITY_IOS && !UNITY_EDITOR_OSX
         if (inputField.touchScreenKeyboard.status == TouchScreenKeyboard.Status.Canceled) {
-            isCancel =true;
+            isCancel = true;
             // Debug.Log ("フィールド: " + inputField.text + " テキスト: " + inputText);
             // if (inputField.text != "") {
             //     inputText = inputField.text;
             //     Debug.Log ("cancel inputText: " + inputText);
             // }
-        } else if (inputField.isFocused && !isCancel){ // 他のところをタップした時
+        } else if (inputField.isFocused && !isCancel) { // 他のところをタップした時
             inputText = inputField.text;
             Debug.Log ("isFocuse inputText: " + inputText);
+        }
+#endif
+    }
+
+    // 送信ボタン関数
+    public void SendFunction () {
+        if (inputText != "") { // 空白は除外
+            Debug.Log ("送信ボタン");
+            massage.from = "user_name";
+            massage.to = "someone";
+            massage.content = inputText;
+
+            // 最後に初期化
+            InitInputField ();
+        }
+    }
+
+    // プライオリティーの変更
+    public void SetPriority (int number) {
+        if (priority != number) {
+            priority = number;
+            Debug.Log ("重要度:" + priority);
         }
     }
 }
