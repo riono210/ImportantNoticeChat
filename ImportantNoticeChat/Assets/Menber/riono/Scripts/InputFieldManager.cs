@@ -19,7 +19,9 @@ public class InputFieldManager : MonoBehaviour {
     bool isCancel;
 
     private MassageClass massage; // メッセージの格納クラス
-    [SerializeField] private GameObject toriggerParent; // priority設定の親objを取得
+    [SerializeField] private GameObject toggleParent; // priority設定の親objを取得
+    private Toggle[] toggles; // 各トグルの配列
+    private Image inputFieldBackgroundImg;
 
     // Start is called before the first frame update
     void Start () {
@@ -30,7 +32,20 @@ public class InputFieldManager : MonoBehaviour {
             defalutBodyPos = bodyPanelRect.localPosition;
         } else {
             Debug.LogError ("Bodyがアタッチされていません");
+            return;
         }
+
+        if (toggleParent == null) {
+            Debug.LogError ("TogglePrantアタッチされていません");
+            return;
+        }
+        // トグルの取得
+        toggles = new Toggle[3];
+        for (int i = 0; i < toggleParent.transform.childCount; i++) {
+            toggles[i] = toggleParent.transform.GetChild (i).GetComponent<Toggle> ();
+        }
+
+        inputFieldBackgroundImg = this.GetComponent<Image> ();
         InitInputField ();
     }
 
@@ -38,9 +53,9 @@ public class InputFieldManager : MonoBehaviour {
 #if UNITY_IOS && !UNITY_EDITOR_OSX
         StartInputText ();
 
-        if (inputField.touchScreenKeyboard == null && !isOnceInput) { // キーボードが消えたとき
-            ResetKeybord ();
-        }
+        // if (inputField.touchScreenKeyboard == null && !isOnceInput) { // キーボードが消えたとき
+        //     ResetKeybord ();
+        // }
 #endif
     }
 
@@ -51,7 +66,8 @@ public class InputFieldManager : MonoBehaviour {
         ResetKeybord ();
         priority = 1;
         massage = new MassageClass ();
-        toriggerParent.SetActive (false); // priorityのトグルを消す
+        toggleParent.SetActive (false); // priorityのトグルを消す
+        inputFieldBackgroundImg.color = ToRGB (0x4FE722);
     }
 
     // キーボードによって上にずれたUIの位置を戻す
@@ -85,6 +101,9 @@ public class InputFieldManager : MonoBehaviour {
             // キーボードだけ戻す
             ResetKeybord ();
             Debug.Log ("Canseled");
+        } else {
+            Debug.Log ("else cansel");
+            TapObjectCheck ();
         }
 #endif
     }
@@ -95,7 +114,7 @@ public class InputFieldManager : MonoBehaviour {
             isOnceInput = false;
             footerPanelRect.localPosition += new Vector3 (0, 940f, 0);
             bodyPanelRect.localPosition += new Vector3 (0, 940f, 0);
-            toriggerParent.SetActive (true); // priorityのトグルを出す
+            toggleParent.SetActive (true); // priorityのトグルを出す
         }
     }
 
@@ -124,6 +143,42 @@ public class InputFieldManager : MonoBehaviour {
 #endif
     }
 
+    public void TapObjectCheck () {
+        Vector3 tapPos = Input.GetTouch (0).position;
+        var raycastResult = new List<RaycastResult> ();
+
+        PointerEventData pointer = new PointerEventData (EventSystem.current);
+        pointer.position = tapPos;
+        EventSystem.current.RaycastAll (pointer, raycastResult);
+
+        foreach (var value in raycastResult) {
+            Debug.Log ("raycast名前: " + value.gameObject.name);
+            if (value.gameObject.name == "SendButton") { // 送信ボタンを押した場合
+                SendFunction ();
+                InitInputField ();
+                return;
+            } else if (value.gameObject.name == "CheckmarkLow") {
+                SetPriority (1);
+                toggles[0].isOn = true;
+                ResetKeybord ();
+                return;
+            } else if (value.gameObject.name == "CheckmarkMid") {
+                SetPriority (10);
+                toggles[1].isOn = true;
+                ResetKeybord ();
+                return;
+            } else if (value.gameObject.name == "CheckmarkHi") {
+                SetPriority (100);
+                toggles[3].isOn = true;
+                ResetKeybord ();
+                return;
+            } else {
+                ResetKeybord ();
+            }
+        }
+
+    }
+
     // 送信ボタン関数
     public void SendFunction () {
         if (inputText != "") { // 空白は除外
@@ -141,7 +196,30 @@ public class InputFieldManager : MonoBehaviour {
     public void SetPriority (int number) {
         if (priority != number) {
             priority = number;
+            switch (number) {
+                case 100:
+                    inputFieldBackgroundImg.color = ToRGB (0xF12A2A);
+                    break;
+                case 10:
+                    inputFieldBackgroundImg.color = ToRGB (0xF1F312);
+                    break;
+
+                case 1:
+                default:
+                    inputFieldBackgroundImg.color = ToRGB (0x4FE722);
+                    break;
+            }
             Debug.Log ("重要度:" + priority);
         }
+    }
+
+    public static Color ToRGB (uint val) {
+        var inv = 1f / 255f;
+        var c = Color.black;
+        c.r = inv * ((val >> 16) & 0xFF);
+        c.g = inv * ((val >> 8) & 0xFF);
+        c.b = inv * (val & 0xFF);
+        c.a = 1f;
+        return c;
     }
 }
