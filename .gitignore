@@ -66,3 +66,6 @@ ImportantNoticeChat/NoticeTest
 ImportantNoticeChat/Temp
 ImportantNoticeChat/obj
 tmpNotice/Library
+
+# env file
+**/Env*
