@@ -68,8 +68,10 @@ public class InputFieldManager : MonoBehaviour {
         ResetKeybord ();
         priority = 1;
         massage = new MassageClass ();
-        toggleParent.SetActive (false); // priorityのトグルを消す
         inputFieldBackgroundImg.color = ToRGB (0x4FE722);
+#if UNITY_IOS && !UNITY_EDITOR_OSX
+        toggleParent.SetActive (false); // priorityのトグルを消す
+#endif
     }
 
     // キーボードによって上にずれたUIの位置を戻す
@@ -85,7 +87,7 @@ public class InputFieldManager : MonoBehaviour {
         Debug.Log ("りざると:" + inputText);
 #if UNITY_EDITOR_OSX
         // エディタでは入力キャンセルは処理しない
-        InitInputField ();
+        //InitInputField ();
         //ResetKeybord ();
 
 #elif UNITY_IOS && !UNITY_EDITOR_OSX
@@ -188,7 +190,7 @@ public class InputFieldManager : MonoBehaviour {
             massage.from = "user_name";
             massage.to = "someone";
             massage.content = inputText;
-            StartCoroutine(api.PostText ("messages", inputText, priority));
+            StartCoroutine (api.PostText ("messages", inputText, priority));
             //Debug.Log ($"test{0}", "state");
 
             // 最後に初期化
