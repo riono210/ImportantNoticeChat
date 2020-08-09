@@ -23,8 +23,8 @@ public class ApiCall : MonoBehaviour {
         Debug.Log(key);
         Debug.Log("message = " + message);
         //StartCoroutine(GetText());
-//        StartCoroutine(PostText("messages", "text_test", 1));
-        //PostText();
+        //StartCoroutine(PostText("messages", "text_test", 1));
+        StartCoroutine(PutText("messages/104", -100));
     }
 
     // Update is called once per frame
@@ -89,4 +89,33 @@ public class ApiCall : MonoBehaviour {
 
     }
     
+    public IEnumerator PutText(string endpoint, int priority) {
+        string url = baseURL + endpoint;
+        // 投げるjsonデータ
+        string postData = "{\"priority\":\"" + priority.ToString() + "\"}";
+        byte[] byteArray = Encoding.UTF8.GetBytes (postData);
+
+        // cookie書き込み
+        CookieContainer cc = new CookieContainer ();
+        cc.Add (new Uri (url), new Cookie ("key", key));
+
+        // リクエストの作成
+        HttpWebRequest req = (HttpWebRequest) WebRequest.Create (url);
+        req.Method = "PUT";
+        req.ContentType = "application/json";
+        req.ContentLength = byteArray.Length;
+        req.CookieContainer = cc;
+
+        // ストリームに送信するデータを書き込む
+        Stream dataStream = req.GetRequestStream ();
+        dataStream.Write (byteArray, 0, byteArray.Length);
+        dataStream.Close ();
+
+        // 送信
+        HttpWebResponse res = (HttpWebResponse) req.GetResponse ();
+
+        yield return res;
+
+    }
+
 }

@@ -23,6 +23,7 @@ public class ApiSample : MonoBehaviour
     [System.Serializable]
     public class GetDataFromKey 
     {
+        public int id;
         public string content;
         public string to;
         public string from;
