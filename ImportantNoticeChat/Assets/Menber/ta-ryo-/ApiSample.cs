@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-
+using System.Linq;
 public class ApiSample : MonoBehaviour
 {
     // Jsonデータにパースするための中身を解析するための地図的な
@@ -39,9 +39,9 @@ public class ApiSample : MonoBehaviour
     IEnumerator GetMessage(string endpoint)
     {
         string base_url = Env.GetBaseUrl();
-
+        string timestamp = "";
         while(true){
-            UnityWebRequest getRequest = UnityWebRequest.Get(base_url+endpoint);
+            UnityWebRequest getRequest = UnityWebRequest.Get(base_url + endpoint + timestamp);
             yield return getRequest.SendWebRequest();
             Debug.Log($"StatusCode: {getRequest.responseCode}");
             var get_text = getRequest.downloadHandler.text;
@@ -50,7 +50,10 @@ public class ApiSample : MonoBehaviour
 
             InputFromJson json_data = JsonUtility.FromJson<InputFromJson>(get_text);
             messageManager.messagesLoaded( json_data );
+            string last_update_time = json_data.result.Last().timestamp;
+            timestamp = "/after/" + last_update_time ;
             yield return new WaitForSeconds(10);
+
         }    
         
         // classの箱を用意しての方法
