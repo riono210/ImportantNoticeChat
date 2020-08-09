@@ -23,6 +23,8 @@ public class InputFieldManager : MonoBehaviour {
     private Toggle[] toggles; // 各トグルの配列
     private Image inputFieldBackgroundImg;
 
+    public ApiCall api; // postAPI
+
     // Start is called before the first frame update
     void Start () {
         inputField = this.transform.GetChild (0).GetComponent<InputField> ();
@@ -186,6 +188,8 @@ public class InputFieldManager : MonoBehaviour {
             massage.from = "user_name";
             massage.to = "someone";
             massage.content = inputText;
+            StartCoroutine(api.PostText ("messages", inputText, priority));
+            //Debug.Log ($"test{0}", "state");
 
             // 最後に初期化
             InitInputField ();
