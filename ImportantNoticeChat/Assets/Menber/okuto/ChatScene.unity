@@ -2050,6 +2050,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1414723448}
   - component: {fileID: 1414723447}
+  - component: {fileID: 1414723449}
   m_Layer: 0
   m_Name: MessageManager
   m_TagString: Untagged
@@ -2084,6 +2085,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1414723449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414723446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b01ce3e35394c7a90e2528688ca808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messageManager: {fileID: 1414723447}
 --- !u!1 &1494366453
 GameObject:
   m_ObjectHideFlags: 0
