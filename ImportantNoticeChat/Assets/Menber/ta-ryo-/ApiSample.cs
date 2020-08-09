@@ -40,6 +40,7 @@ public class ApiSample : MonoBehaviour
     {
         string base_url = Env.GetBaseUrl();
         string timestamp = "";
+        string last_update_time = "";
         while(true){
             UnityWebRequest getRequest = UnityWebRequest.Get(base_url + endpoint + timestamp);
             yield return getRequest.SendWebRequest();
@@ -49,11 +50,22 @@ public class ApiSample : MonoBehaviour
 
 
             InputFromJson json_data = JsonUtility.FromJson<InputFromJson>(get_text);
-            messageManager.messagesLoaded( json_data );
-            string last_update_time = json_data.result.Last().timestamp;
-            timestamp = "/after/" + last_update_time ;
-            yield return new WaitForSeconds(10);
+            messageManager.messagesLoaded( json_data ); // メッセージの表示
 
+            // 空配列（更新されてない）の場合は次のループへ
+            if (json_data.result.Length == 0){
+                continue;
+            }
+
+            // 最終更新時間を設定
+            GetDataFromKey last_message = json_data.result.Last();
+
+            int second = int.Parse(last_message.timestamp.Substring(last_message.timestamp.Length-2, 2));
+            last_update_time = last_message.timestamp.Substring(0, last_message.timestamp.Length-2) + (second+1).ToString("00");
+            timestamp = "/after/" + last_update_time ;     
+            Debug.Log(timestamp);
+
+            yield return new WaitForSeconds(10);
         }    
         
         // classの箱を用意しての方法
