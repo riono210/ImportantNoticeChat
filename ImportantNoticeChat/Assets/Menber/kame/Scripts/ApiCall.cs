@@ -9,19 +9,21 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class ApiCall : MonoBehaviour {
-    string url = "http://db.denchu.cloud:5111/uiuxchat3287bivsgfbivf/test2/messages";
-    // アクセスキーは削除すること
-    string key = "";
+    string url;
+    string key;
     string message = "(・∀・)ｲｲ!!";
 
     // Start is called before the first frame update
     void Start()
     {
+        url = Env.GetBaseUrl();
+        key = Env.GetSecKey();
+
         Debug.Log(url);
         Debug.Log(key);
         Debug.Log("message = " + message);
-        // StartCoroutine(GetText());
-        StartCoroutine(PostText());
+        StartCoroutine(GetText());
+        //StartCoroutine(PostText());
         //PostText();
     }
 
@@ -31,7 +33,7 @@ public class ApiCall : MonoBehaviour {
     }
 
     IEnumerator GetText() {
-        var request = UnityWebRequest.Get(url);
+        var request = UnityWebRequest.Get(url+"messages");
         yield return request.SendWebRequest();
 
         if(request.isHttpError) {
