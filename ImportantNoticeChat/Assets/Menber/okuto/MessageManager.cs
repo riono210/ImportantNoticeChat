@@ -42,6 +42,7 @@ public class MessageManager : MonoBehaviour
 
 
     public void messagesLoaded(ApiSample.InputFromJson json_data ){
+        Debug.Log("messages loaded");
         Debug.Log(json_data);
         inputFromJson = json_data;
     }
