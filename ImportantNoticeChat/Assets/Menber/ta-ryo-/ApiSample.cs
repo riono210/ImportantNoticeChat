@@ -12,6 +12,8 @@ public class ApiSample : MonoBehaviour
    //     public string[] result;
    // }
 
+    public MessageManager messageManager;
+
     [System.Serializable]
     public class InputFromJson 
     {
@@ -39,7 +41,11 @@ public class ApiSample : MonoBehaviour
         Debug.Log(get_text);
 
 
+
         InputFromJson json_data = JsonUtility.FromJson<InputFromJson>(get_text);
+        messageManager.messagesLoaded( json_data );
+
+        
         
         // classの箱を用意しての方法
         // 叩いたAPIのデータが文字列型なのでInputFromJsonで宣言した型でjsonとしてパースしてる
