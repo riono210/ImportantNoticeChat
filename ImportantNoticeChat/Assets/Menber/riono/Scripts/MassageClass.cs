@@ -4,8 +4,8 @@ using UnityEngine;
 
 [System.Serializable]
 public class MassageClass {
-    public string from;
-    public string to;
+    public string from = "riono";
+    public string to = "okuto";
     public string content;
     //public string timestamp;
     public int priority;

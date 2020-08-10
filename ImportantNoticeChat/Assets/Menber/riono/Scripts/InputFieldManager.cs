@@ -18,7 +18,7 @@ public class InputFieldManager : MonoBehaviour {
     int priority; // メッセージの重要度
     bool isCancel;
 
-    private MassageClass massage; // メッセージの格納クラス
+    //private MassageClass massage; // メッセージの格納クラス
     [SerializeField] private GameObject toggleParent; // priority設定の親objを取得
     private Toggle[] toggles; // 各トグルの配列
     private Image inputFieldBackgroundImg;
@@ -67,7 +67,7 @@ public class InputFieldManager : MonoBehaviour {
         inputText = "";
         ResetKeybord ();
         priority = 1;
-        massage = new MassageClass ();
+        //massage = new MassageClass ();
         inputFieldBackgroundImg.color = ToRGB (0x4FE722);
 #if UNITY_IOS && !UNITY_EDITOR_OSX
         toggleParent.SetActive (false); // priorityのトグルを消す
@@ -187,9 +187,9 @@ public class InputFieldManager : MonoBehaviour {
     public void SendFunction () {
         if (inputText != "") { // 空白は除外
             Debug.Log ("送信ボタン");
-            massage.from = "user_name";
-            massage.to = "someone";
-            massage.content = inputText;
+            // massage.from = "user_name";
+            // massage.to = "someone";
+            // massage.content = inputText;
             StartCoroutine (api.PostText ("messages", inputText, priority));
             //Debug.Log ($"test{0}", "state");
 
