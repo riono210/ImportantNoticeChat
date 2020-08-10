@@ -61,7 +61,7 @@ public class MessageManager : MonoBehaviour
         GameObject newMessage = Instantiate(this.myMessage);
         newMessage.transform.SetParent(this.messages.transform);
 
-        Text messageTextNode = newMessage.transform.Find("Message").gameObject.GetComponent<Text>();
+        Text messageTextNode = newMessage.transform.Find("MessageText").gameObject.GetComponent<Text>();
         messageTextNode.text = content;
 
         Text userNameNode = newMessage.transform.Find("User/Name").gameObject.GetComponent<Text>();
@@ -75,7 +75,7 @@ public class MessageManager : MonoBehaviour
         Text userNameNode = newMessage.transform.Find("User/Name").gameObject.GetComponent<Text>();
         userNameNode.text = userName;
         // set content
-        Text messageTextNode = newMessage.transform.Find("Message").gameObject.GetComponent<Text>();
+        Text messageTextNode = newMessage.transform.Find("MessageText").gameObject.GetComponent<Text>();
         messageTextNode.text = content;
         // set id
         newMessage.GetComponent<OthersMessage>().messageId = id;
@@ -83,6 +83,18 @@ public class MessageManager : MonoBehaviour
         if (priority > NORMAL_MESSAGE_PRIORITY){
             newMessage.transform.Find("Norticification").gameObject.SetActive(true);
             newMessage.transform.Find("StopNorticificationButton").gameObject.SetActive(true);
+        }
+
+        switch(priority){
+            case 10:
+                newMessage.transform.Find("Panel").gameObject.GetComponent<Outline>().effectColor = ToRGB (0xF1F312);
+                break;
+            case 100:                
+                newMessage.transform.Find("Panel").gameObject.GetComponent<Outline>().effectColor = ToRGB (0xF12A2A);
+                break;
+            default:
+                newMessage.transform.Find("Panel").gameObject.GetComponent<Outline>().effectColor = ToRGB (0x4FE722);
+                break;
         }
 
         newMessage.transform.SetParent(this.messages.transform);
@@ -126,5 +138,15 @@ public class MessageManager : MonoBehaviour
         this.removeImportantMessage(messageId);
     }
 
+
+    private Color ToRGB (uint val) {
+        var inv = 1f / 255f;
+        var c = Color.black;
+        c.r = inv * ((val >> 16) & 0xFF);
+        c.g = inv * ((val >> 8) & 0xFF);
+        c.b = inv * (val & 0xFF);
+        c.a = 1f;
+        return c;
+    }
 }
 
