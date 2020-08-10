@@ -13,53 +13,49 @@ public class ApiCall : MonoBehaviour {
     string key;
     string message = "(・∀・)ｲｲ!!";
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        baseURL = Env.GetBaseUrl();
-        key = Env.GetSecKey();
+    [SerializeField] private ApiSample apiSample;
 
-        Debug.Log(baseURL);
-        Debug.Log(key);
-        Debug.Log("message = " + message);
+    // Start is called before the first frame update
+    void Start () {
+        baseURL = Env.GetBaseUrl ();
+        key = Env.GetSecKey ();
+
+        Debug.Log (baseURL);
+        Debug.Log (key);
+        Debug.Log ("message = " + message);
         //StartCoroutine(GetText());
         //StartCoroutine(PostText("messages", "text_test", 1));
-        StartCoroutine(PutText("messages/104", -100));
+        //StartCoroutine (PutText ("messages/104", -100));
     }
 
     // Update is called once per frame
-    void Update()
-    {
-    }
+    void Update () { }
 
-    IEnumerator GetText() {
-        var request = UnityWebRequest.Get(baseURL+"messages");
-        yield return request.SendWebRequest();
+    IEnumerator GetText () {
+        var request = UnityWebRequest.Get (baseURL + "messages");
+        yield return request.SendWebRequest ();
 
-        if(request.isHttpError) {
+        if (request.isHttpError) {
             // レスポンスコードを見て処理
-            Debug.Log($"[Error]Response Code : {request.responseCode}");
-        }
-        else if (request.isNetworkError) {
+            Debug.Log ($"[Error]Response Code : {request.responseCode}");
+        } else if (request.isNetworkError) {
             // エラーメッセージを見て処理
-            Debug.Log($"[Error]Message : {request.error}");
-        }
-        else{
+            Debug.Log ($"[Error]Message : {request.error}");
+        } else {
             // 成功したときの処理
-            Debug.Log($"[Success]");
-            Debug.Log(request.downloadHandler.text);
+            Debug.Log ($"[Success]");
+            Debug.Log (request.downloadHandler.text);
 
         }
     }
 
-    
-    public IEnumerator PostText(string endpoint, string content, int priority) {
+    public IEnumerator PostText (string endpoint, string content, int priority) {
         string url = baseURL + endpoint;
         // 投げるjsonデータ
-        string postData = "{\"to\":\"" + Env.to + "\", \"from\":\"" + Env.from + "\","
-        + "\"content\":\"" + content
-        + "\", \"priority\":\"" + priority.ToString() + "\"}";
-//        string postData = ($@"{"to:"someone", "from:"someone", "content":"{content}", "priority":{priority} }");
+        string postData = "{\"to\":\"" + Env.to + "\", \"from\":\"" + Env.from + "\"," +
+            "\"content\":\"" + content +
+            "\", \"priority\":\"" + priority.ToString () + "\"}";
+        //        string postData = ($@"{"to:"someone", "from:"someone", "content":"{content}", "priority":{priority} }");
         byte[] byteArray = Encoding.UTF8.GetBytes (postData);
 
         // cookie書き込み
@@ -81,18 +77,19 @@ public class ApiCall : MonoBehaviour {
         // 送信
         HttpWebResponse res = (HttpWebResponse) req.GetResponse ();
 
-//        for (int i = 0; i < res.Headers.Count; i++) {
-//            Debug.Log (res.Headers[i]);
-//        }
+        //        for (int i = 0; i < res.Headers.Count; i++) {
+        //            Debug.Log (res.Headers[i]);
+        //        }
 
         yield return res;
 
+        yield return StartCoroutine (apiSample.GetMessage ("messages", true));
     }
-    
-    public IEnumerator PutText(string endpoint, int priority) {
+
+    public IEnumerator PutText (string endpoint, int priority) {
         string url = baseURL + endpoint;
         // 投げるjsonデータ
-        string postData = "{\"priority\":\"" + priority.ToString() + "\"}";
+        string postData = "{\"priority\":\"" + priority.ToString () + "\"}";
         byte[] byteArray = Encoding.UTF8.GetBytes (postData);
 
         // cookie書き込み
@@ -115,7 +112,6 @@ public class ApiCall : MonoBehaviour {
         HttpWebResponse res = (HttpWebResponse) req.GetResponse ();
 
         yield return res;
-
     }
 
 }

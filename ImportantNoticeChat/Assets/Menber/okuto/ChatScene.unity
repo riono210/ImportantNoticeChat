@@ -2286,6 +2286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d13b675ee0fc42e6917fbbe555c1c7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  apiSample: {fileID: 1414723449}
 --- !u!1001 &1426594187
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2815,6 +2816,11 @@ PrefabInstance:
       propertyPath: bodyPanelRect
       value: 
       objectReference: {fileID: 1305323436}
+    - target: {fileID: 2570237807963328982, guid: 0b8c18790c2fb4f609e7f9e5619d8ff0,
+        type: 3}
+      propertyPath: api
+      value: 
+      objectReference: {fileID: 1414723450}
     - target: {fileID: 2570237808202229612, guid: 0b8c18790c2fb4f609e7f9e5619d8ff0,
         type: 3}
       propertyPath: m_Name
@@ -2925,7 +2931,8 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8083094586873303920, guid: 0b8c18790c2fb4f609e7f9e5619d8ff0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0b8c18790c2fb4f609e7f9e5619d8ff0, type: 3}
 --- !u!1 &1673174690
 GameObject:

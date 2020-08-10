@@ -13,6 +13,10 @@ public class ApiSample : MonoBehaviour {
 
     public MessageManager messageManager;
 
+    private GetDataFromKey last_message;
+    string timestamp = "";
+    string last_update_time = "";
+
     [System.Serializable]
     public class InputFromJson {
         public GetDataFromKey[] result;
@@ -32,10 +36,9 @@ public class ApiSample : MonoBehaviour {
         StartCoroutine (GetMessage ("messages"));
     }
 
-    IEnumerator GetMessage (string endpoint) {
+    public IEnumerator GetMessage (string endpoint, bool once = false) {
         string base_url = Env.GetBaseUrl ();
-        string timestamp = "";
-        string last_update_time = "";
+
         while (true) {
             UnityWebRequest getRequest = UnityWebRequest.Get (base_url + endpoint + timestamp);
             yield return getRequest.SendWebRequest ();
@@ -53,12 +56,18 @@ public class ApiSample : MonoBehaviour {
             }
 
             // 最終更新時間を設定
-            GetDataFromKey last_message = json_data.result.Last ();
+            last_message = json_data.result.Last ();
 
             int second = int.Parse (last_message.timestamp.Substring (last_message.timestamp.Length - 2, 2));
             last_update_time = last_message.timestamp.Substring (0, last_message.timestamp.Length - 2) + (second + 1).ToString ("00");
             timestamp = "/after/" + last_update_time;
             Debug.Log (timestamp);
+
+            // 一回だけメッセージを取得する場合
+            if (once) {
+                Debug.Log ("once break");
+                break;
+            }
         }
 
         // classの箱を用意しての方法
