@@ -680,7 +680,7 @@ RectTransform:
   - {fileID: 257277025}
   - {fileID: 1426594188}
   m_Father: {fileID: 799400664}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1057,6 +1057,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1414723448}
   - {fileID: 300363108}
   m_Father: {fileID: 867823085}
   m_RootOrder: 0
@@ -1676,12 +1677,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1414723446}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -30, y: -1728, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 799400664}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1414723449
 MonoBehaviour:
@@ -2000,6 +2001,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 130159380}
     m_Modifications:
+    - target: {fileID: 2570237807553373003, guid: 0b8c18790c2fb4f609e7f9e5619d8ff0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 4.9836426
+      objectReference: {fileID: 0}
     - target: {fileID: 2570237807963328982, guid: 0b8c18790c2fb4f609e7f9e5619d8ff0,
         type: 3}
       propertyPath: bodyPanelRect

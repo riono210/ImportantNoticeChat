@@ -43,7 +43,7 @@ public class MessageManager : MonoBehaviour
                     // 重要なメッセージは this.importantMessages に追加
                     this.appendNewImportantMessage(newMessage);                    
                 }
-                this.appendOthersMessage(newMessage.from, newMessage.content, newMessage.priority);
+                this.appendOthersMessage(newMessage.from, newMessage.content, newMessage.id, newMessage.priority);
             }
         }        
     }
@@ -68,20 +68,24 @@ public class MessageManager : MonoBehaviour
         userNameNode.text = userName;
     }
 
-    void appendOthersMessage(string userName, string content, int priority){
+    void appendOthersMessage(string userName, string content, int id, int priority){
+        // Instantiate
         GameObject newMessage = Instantiate(this.othersMessage);
-        newMessage.transform.SetParent(this.messages.transform);
-
-        Text messageTextNode = newMessage.transform.Find("Message").gameObject.GetComponent<Text>();
-        messageTextNode.text = content;
-
+        // set userName
         Text userNameNode = newMessage.transform.Find("User/Name").gameObject.GetComponent<Text>();
         userNameNode.text = userName;
-
+        // set content
+        Text messageTextNode = newMessage.transform.Find("Message").gameObject.GetComponent<Text>();
+        messageTextNode.text = content;
+        // set id
+        newMessage.GetComponent<OthersMessage>().messageId = id;
+        // set priority
         if (priority > NORMAL_MESSAGE_PRIORITY){
             newMessage.transform.Find("Norticification").gameObject.SetActive(true);
             newMessage.transform.Find("StopNorticificationButton").gameObject.SetActive(true);
         }
+
+        newMessage.transform.SetParent(this.messages.transform);
     }
 
 
@@ -98,5 +102,10 @@ public class MessageManager : MonoBehaviour
         this.displayNewMessages(json_data);
 
     }
+
+    public void removeImportantMessage(int removeId){
+        this.importantMessages.result = this.importantMessages.result.Where((data, index) => data.id != removeId).ToArray();
+    }
+
 }
 
