@@ -84,7 +84,7 @@ public class InputFieldManager : MonoBehaviour {
 
     // 入力完了
     public void FinishEditText () {
-        Debug.Log ("りざると:" + inputText);
+        //Debug.Log ("りざると:" + inputText);
 #if UNITY_EDITOR_OSX
         // エディタでは入力キャンセルは処理しない
         //InitInputField ();
@@ -97,16 +97,16 @@ public class InputFieldManager : MonoBehaviour {
 
             // フィールドの初期化
             InitInputField ();
-            Debug.Log ("Done");
+            //Debug.Log ("Done");
         } else if (inputField.touchScreenKeyboard.status == TouchScreenKeyboard.Status.Canceled ||
             inputField.touchScreenKeyboard.status == TouchScreenKeyboard.Status.LostFocus) {
             // 入力キャンセル時もしくは、
             inputField.text = inputText;
             // キーボードだけ戻す
             ResetKeybord ();
-            Debug.Log ("Canseled");
+            //Debug.Log ("Canseled");
         } else {
-            Debug.Log ("else cansel");
+            //Debug.Log ("else cansel");
             TapObjectCheck ();
         }
 #endif
@@ -124,7 +124,7 @@ public class InputFieldManager : MonoBehaviour {
 
     // テキストの内容が変更された時に呼ばれる
     public void ChangeTextField () {
-        Debug.Log ("呼び出しフィールド: " + inputField.text);
+        //Debug.Log ("呼び出しフィールド: " + inputField.text);
         if (inputField.text == "") { // 空白は無視
             return;
         }

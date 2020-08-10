@@ -56,7 +56,7 @@ public class ApiCall : MonoBehaviour {
     public IEnumerator PostText(string endpoint, string content, int priority) {
         string url = baseURL + endpoint;
         // 投げるjsonデータ
-        string postData = "{\"to\":\"someone\", \"from\":\"someone\","
+        string postData = "{\"to\":\"" + Env.to + "\", \"from\":\"" + Env.from + "\","
         + "\"content\":\"" + content
         + "\", \"priority\":\"" + priority.ToString() + "\"}";
 //        string postData = ($@"{"to:"someone", "from:"someone", "content":"{content}", "priority":{priority} }");
