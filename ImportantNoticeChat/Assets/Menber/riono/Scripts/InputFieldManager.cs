@@ -69,9 +69,6 @@ public class InputFieldManager : MonoBehaviour {
         priority = 1;
         //massage = new MassageClass ();
         inputFieldBackgroundImg.color = ToRGB (0x4FE722);
-#if UNITY_IOS && !UNITY_EDITOR_OSX
-        toggleParent.SetActive (false); // priorityのトグルを消す
-#endif
     }
 
     // キーボードによって上にずれたUIの位置を戻す
@@ -80,6 +77,9 @@ public class InputFieldManager : MonoBehaviour {
         footerPanelRect.localPosition = defaultFooterPos;
         bodyPanelRect.localPosition = defalutBodyPos;
         isCancel = false;
+#if UNITY_IOS && !UNITY_EDITOR_OSX
+        toggleParent.SetActive (false); // priorityのトグルを消す
+#endif
     }
 
     // 入力完了

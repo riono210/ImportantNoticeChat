@@ -36,7 +36,7 @@ public class PushNotificationTest : MonoBehaviour {
     // 重要度によって通知間隔を全てセット、
     private void PushNoticeSet (string contnt, int priority) {
         DateTime nowTime = DateTime.Now;
-        DateTime todayMidnight = new DateTime (nowTime.Year, nowTime.Month, nowTime.Day, 23, 59, 00);
+        DateTime todayMidnight = new DateTime (nowTime.Year, nowTime.Month, nowTime.Day, 07, 00, 00);
         TimeSpan ts = todayMidnight - nowTime;
         int totalMSecond = ((ts.Hours * 3600) + ts.Seconds) * 1000; // 真夜中までのミリ秒の差
 

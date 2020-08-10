@@ -43,10 +43,8 @@ public class MessageManager : MonoBehaviour {
                 this.appendOthersMessage (newMessage.from, newMessage.content, newMessage.id, newMessage.priority);
             }
         }
-        if (firstGet) {
-            firstGet = false;
-            StartCoroutine (autoDown.AutoSetScroll ());
-        }
+
+        StartCoroutine (autoDown.AutoSetScroll ());
     }
 
     void appendNewImportantMessage (ApiSample.GetDataFromKey newMessage) {

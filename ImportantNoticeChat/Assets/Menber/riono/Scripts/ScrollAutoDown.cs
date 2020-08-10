@@ -18,9 +18,11 @@ public class ScrollAutoDown : MonoBehaviour {
 
     // スクロールビューを一番下にする
     public IEnumerator AutoSetScroll () {
-        yield return new WaitForSeconds (0.5f);
-        Debug.Log ("すくろーる");
-        scrollRect.verticalNormalizedPosition = 0f;
-        scrollRect.SetLayoutVertical ();
+        if (scrollRect.verticalNormalizedPosition <= 0.08f) {
+            yield return new WaitForSeconds (0.5f);
+            Debug.Log ("すくろーる");
+            scrollRect.verticalNormalizedPosition = 0f;
+            scrollRect.SetLayoutVertical ();
+        }
     }
 }
