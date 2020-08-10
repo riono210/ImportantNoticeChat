@@ -14,6 +14,7 @@ public class ApiCall : MonoBehaviour {
     string message = "(・∀・)ｲｲ!!";
 
     [SerializeField] private ApiSample apiSample;
+    [SerializeField] private ScrollAutoDown autoDown;
 
     // Start is called before the first frame update
     void Start () {
@@ -84,6 +85,8 @@ public class ApiCall : MonoBehaviour {
         yield return res;
 
         yield return StartCoroutine (apiSample.GetMessage ("messages", true));
+
+        StartCoroutine (autoDown.AutoSetScroll ());
     }
 
     public IEnumerator PutText (string endpoint, int priority) {

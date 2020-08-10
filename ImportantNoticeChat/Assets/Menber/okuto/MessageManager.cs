@@ -15,6 +15,7 @@ public class MessageManager : MonoBehaviour {
     private int NORMAL_MESSAGE_PRIORITY = 1;
 
     // スクロールビューを一番下にする
+    private bool firstGet = true;
     [SerializeField] private ScrollAutoDown autoDown;
     //    private ApiSample.InputFromJson newMessages;
 
@@ -42,7 +43,10 @@ public class MessageManager : MonoBehaviour {
                 this.appendOthersMessage (newMessage.from, newMessage.content, newMessage.id, newMessage.priority);
             }
         }
-        StartCoroutine(autoDown.AutoSetScroll ());
+        if (firstGet) {
+            firstGet = false;
+            StartCoroutine (autoDown.AutoSetScroll ());
+        }
     }
 
     void appendNewImportantMessage (ApiSample.GetDataFromKey newMessage) {
