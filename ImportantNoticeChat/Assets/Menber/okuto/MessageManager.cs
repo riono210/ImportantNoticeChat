@@ -7,11 +7,11 @@ using System.Linq;
 
 public class MessageManager : MonoBehaviour
 {
-
     public GameObject messages;
     public GameObject myMessage;
-    public GameObject othersMessage;   
-
+    public GameObject othersMessage;
+    public GameObject reminderWindow;
+    public GameObject selectedMessage;
     public ApiSample.InputFromJson importantMessages = new ApiSample.InputFromJson();
 
     private int NORMAL_MESSAGE_PRIORITY = 1;
@@ -105,6 +105,25 @@ public class MessageManager : MonoBehaviour
 
     public void removeImportantMessage(int removeId){
         this.importantMessages.result = this.importantMessages.result.Where((data, index) => data.id != removeId).ToArray();
+    }
+
+    public void updatePriority(){
+        int messageId = this.selectedMessage.GetComponent<OthersMessage>().messageId;
+
+        // データベースの変更
+        string endpoint = "messages/" + messageId.ToString();
+        Debug.Log(endpoint);
+        int priority = 1;
+
+
+        ApiCall apiCall = this.GetComponent<ApiCall>();
+        StartCoroutine(apiCall.PutText(endpoint, priority));
+
+        // "重要なメッセージ"という警告文と、ボタンを非表示
+        this.selectedMessage.transform.Find("Norticification").gameObject.SetActive(false);
+        this.selectedMessage.transform.Find("StopNorticificationButton").gameObject.SetActive(false);
+
+        this.removeImportantMessage(messageId);
     }
 
 }

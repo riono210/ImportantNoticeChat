@@ -18,22 +18,17 @@ public class StopNortificationButton : MonoBehaviour
 
     public void OnClick(){
         GameObject message = this.transform.parent.gameObject;
-        int messageId = message.GetComponent<OthersMessage>().messageId;
+        Debug.Log(message);
+        Debug.Log(message.transform.parent);
+        Debug.Log(message.transform.parent.parent);
+        MessageManager messageManager = message.transform.parent.parent.Find("MessageManager").GetComponent<MessageManager>();
 
-        // データベースの変更
-        string endpoint = "messages/" + messageId.ToString();
-        Debug.Log(endpoint);
-        int priority = 1;
+        Debug.Log(messageManager);
 
-        GameObject messageManager = message.transform.parent.parent.Find("MessageManager").gameObject;
-        ApiCall apiCall = messageManager.GetComponent<ApiCall>();
-        StartCoroutine(apiCall.PutText(endpoint, priority));
+        messageManager.selectedMessage = message;
 
-        // "重要なメッセージ"という警告文と、ボタンを非表示
-        message.transform.Find("Norticification").gameObject.SetActive(false);
-        this.gameObject.SetActive(false);
-
-        messageManager.GetComponent<MessageManager>().removeImportantMessage(messageId);
-
+        GameObject reminderWindow = messageManager.reminderWindow;
+        ReminderWindow temp = reminderWindow.GetComponent<ReminderWindow>();        
+        reminderWindow.gameObject.SetActive(true);
     }
 }
