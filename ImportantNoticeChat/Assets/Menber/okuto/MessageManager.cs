@@ -13,6 +13,9 @@ public class MessageManager : MonoBehaviour {
     public ApiSample.InputFromJson importantMessages = new ApiSample.InputFromJson ();
 
     private int NORMAL_MESSAGE_PRIORITY = 1;
+
+    // スクロールビューを一番下にする
+    [SerializeField] private ScrollAutoDown autoDown;
     //    private ApiSample.InputFromJson newMessages;
 
     // Start is called before the first frame update
@@ -29,7 +32,6 @@ public class MessageManager : MonoBehaviour {
 
     void displayNewMessages (ApiSample.InputFromJson newMessages) {
         foreach (ApiSample.GetDataFromKey newMessage in newMessages.result) {
-            //Debug.Log ("messge: " + newMessage.from + " env: " + Env.to);
             if (newMessage.from == Env.from) {
                 this.appendMyMessage (newMessage.from, newMessage.content);
             } else if (true) {
@@ -40,6 +42,7 @@ public class MessageManager : MonoBehaviour {
                 this.appendOthersMessage (newMessage.from, newMessage.content, newMessage.id, newMessage.priority);
             }
         }
+        StartCoroutine(autoDown.AutoSetScroll ());
     }
 
     void appendNewImportantMessage (ApiSample.GetDataFromKey newMessage) {
