@@ -43,7 +43,7 @@ public class MessageManager : MonoBehaviour
                     // 重要なメッセージは this.importantMessages に追加
                     this.appendNewImportantMessage(newMessage);                    
                 }
-                this.appendOthersMessage(newMessage.from, newMessage.content);
+                this.appendOthersMessage(newMessage.from, newMessage.content, newMessage.priority);
             }
         }        
     }
@@ -68,7 +68,7 @@ public class MessageManager : MonoBehaviour
         userNameNode.text = userName;
     }
 
-    void appendOthersMessage(string userName, string content){
+    void appendOthersMessage(string userName, string content, int priority){
         GameObject newMessage = Instantiate(this.othersMessage);
         newMessage.transform.SetParent(this.messages.transform);
 
@@ -77,6 +77,11 @@ public class MessageManager : MonoBehaviour
 
         Text userNameNode = newMessage.transform.Find("User/Name").gameObject.GetComponent<Text>();
         userNameNode.text = userName;
+
+        if (priority > NORMAL_MESSAGE_PRIORITY){
+            newMessage.transform.Find("Norticification").gameObject.SetActive(true);
+            newMessage.transform.Find("StopNorticificationButton").gameObject.SetActive(true);
+        }
     }
 
 
