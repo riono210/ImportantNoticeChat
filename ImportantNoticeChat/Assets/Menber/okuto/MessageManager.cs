@@ -36,7 +36,7 @@ public class MessageManager : MonoBehaviour
 
     void displayNewMessages(ApiSample.InputFromJson newMessages){
         foreach (ApiSample.GetDataFromKey newMessage in newMessages.result){
-            if (newMessage.from == Env.from){
+            if (newMessage.from == Env.to){
                 this.appendMyMessage(newMessage.from, newMessage.content);
             }else if(true){
                 if (newMessage.priority > NORMAL_MESSAGE_PRIORITY){
