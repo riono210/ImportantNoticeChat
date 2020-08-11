@@ -128,7 +128,8 @@ public class MessageManager : MonoBehaviour {
         // "重要なメッセージ"という警告文と、ボタンを非表示
         this.selectedMessage.transform.Find ("Norticification").gameObject.SetActive (false);
         this.selectedMessage.transform.Find ("StopNorticificationButton").gameObject.SetActive (false);
-
+        // 枠線を緑に変更
+        this.selectedMessage.transform.Find ("Panel").gameObject.GetComponent<Outline> ().effectColor = ToRGB (0x4FE722);
         this.removeImportantMessage (messageId);
     }
 
