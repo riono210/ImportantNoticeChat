@@ -4,8 +4,12 @@
 ## フレームワーク
 - Unity(C#)， バージョン:2019.4.5f1
 
-## デプロイ
-- ios
+## デプロイ方法
+Unity画面上部メニューにある，File→Build Settings→iosを選択して，画面右下にあるSwich platformボタンを押す．  
+そこで，Unity Editorまたは実機ビルド(ios)の場合で，以下の2つの操作に分かれる．
+- Unity Editor上で動かす場合: 画面中央上部の実行ボタンを押す
+- 実機ビルドの場合: PCとios端末を接続して、Build And Runボタンを押す→Xcodeプロジェクトに変換されるのでXcode側でBuildおよびRunされる
+
 
 ## 実行方法
 本アプリは，エンドポイントのURLやシークレットキー，送信元，送信先をEnvファイルで管理した．  
